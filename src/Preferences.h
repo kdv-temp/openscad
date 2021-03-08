@@ -61,6 +61,9 @@ public slots:
 	void on_consoleFontSize_currentIndexChanged(const QString &);
 	void on_checkBoxEnableAutocomplete_toggled(bool);
 	void on_lineEditCharacterThreshold_textChanged(const QString &);
+	void on_horizontalSliderEyeSeparation_valueChanged(int);
+	void on_horizontalSliderOutOfScreen_valueChanged(int);
+	void on_horizontalSliderNearClippingPlane_valueChanged(int);
   //
 	// editor settings
   //

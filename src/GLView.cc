@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "colormap.h"
 #include "rendersettings.h"
+#include "settings.h"
 #include "printutils.h"
 #include "renderer.h"
 #include "degree_trig.h"
@@ -80,6 +81,107 @@ void GLView::resizeGL(int w, int h)
 	if (this->renderer) { this->renderer->resize(cam.pixel_width,cam.pixel_height); }
 }
 
+/* 3d anaglyph - set up camera for left or right eye */
+/* after https://quiescentspark.blogspot.com/2011/05/rendering-3d-anaglyph-in-opengl.html */
+void GLView::setup3dCamera(bool leftCamera) {
+  double eyeSeparation = Settings::Settings::inst()->get(Settings::Settings::eyeSeparation).toDouble() * 0.1;
+  double outOfScreen = Settings::Settings::inst()->get(Settings::Settings::outOfScreen).toDouble() * 0.1;
+  double nearClippingPlane = Settings::Settings::inst()->get(Settings::Settings::nearClippingPlane).toDouble() * 0.1;
+  float left, right, bottom, top;
+  float convergence = (float)cam.zoomValue();
+  float aspectRatio = aspectratio;
+  float fov = cam.fov;
+  double offset = - cam.zoomValue() * outOfScreen * 0.01;
+  float nearClippingDistance = 0.01 * cam.zoomValue() * nearClippingPlane;
+  float farClippingDistance = 100.0 * cam.zoomValue() * nearClippingPlane; // ratio of 10000 between near and far- ought to be no problem for floats
+
+  // calculate frustum
+  top = nearClippingDistance * tan_degrees(fov / 2.0);
+  bottom = -top;
+  float a = aspectRatio * tan_degrees(fov / 2.0) * convergence;
+  float b = a - eyeSeparation / 2;
+  float c = a + eyeSeparation / 2;
+  if (leftCamera) { // left camera
+    left = -b * nearClippingDistance / convergence;
+    right = c * nearClippingDistance / convergence;
+  }
+  else { // right camera
+    left = -c * nearClippingDistance / convergence;
+    right = b * nearClippingDistance / convergence;
+  }
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  glFrustum(left, right, bottom, top, nearClippingDistance, farClippingDistance);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  if (leftCamera) { // left camera
+    glTranslatef(eyeSeparation / 2, 0.0, 0.0);
+  }
+  else { // right camera
+    glTranslatef(-eyeSeparation / 2, 0.0, 0.0);
+  }
+  glTranslatef(0.0, 0.0, offset);
+  gluLookAt(0.0, -cam.zoomValue(), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+  glRotated(cam.object_rot.x(), 1.0, 0.0, 0.0);
+  glRotated(cam.object_rot.y(), 0.0, 1.0, 0.0);
+  glRotated(cam.object_rot.z(), 0.0, 0.0, 1.0);
+}
+
+/* 3d anaglyph - paint one eye */
+
+void GLView::paintOnce()
+{
+  auto crosshaircol = ColorMap::getColor(*this->colorscheme, RenderColor::CROSSHAIR_COLOR);
+  // The crosshair should be fixed at the center of the viewport...
+  if (showcrosshairs) GLView::showCrosshairs(crosshaircol);
+  glTranslated(cam.object_trans.x(), cam.object_trans.y(), cam.object_trans.z());
+  // ...the axis lines need to follow the object translation.
+  auto axescolor = ColorMap::getColor(*this->colorscheme, RenderColor::AXES_COLOR);
+  if (showaxes) GLView::showAxes(axescolor);
+  // mark the scale along the axis lines
+  if (showaxes && showscale) GLView::showScalemarkers(axescolor);
+
+  glEnable(GL_LIGHTING);
+  glDepthFunc(GL_LESS);
+  glCullFace(GL_BACK);
+  glDisable(GL_CULL_FACE);
+  glLineWidth(2);
+  glColor3d(1.0, 0.0, 0.0);
+
+  if (this->renderer) {
+#if defined(ENABLE_OPENCSG)
+    OpenCSG::setContext(this->opencsg_id);
+#endif
+    this->renderer->prepare(showfaces, showedges);
+    this->renderer->draw(showfaces, showedges);
+  }
+
+  glDisable(GL_LIGHTING);
+}
+
+/* 3d anaglyph - paint both eyes */
+
+void GLView::paint3dAnaglyph() {
+  glDisable(GL_LIGHTING);
+  auto bgcol = ColorMap::getColor(*this->colorscheme, RenderColor::BACKGROUND_COLOR);
+  glClearColor(bgcol[0], bgcol[1], bgcol[2], 1.0);
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  setup3dCamera(true); // left eye
+  glColorMask(true, false, false, false); // red
+  paintOnce();
+
+  glClear(GL_DEPTH_BUFFER_BIT);
+  setup3dCamera(false); // right eye
+  glColorMask(false, true, true, false); // cyan
+  paintOnce();
+
+  glColorMask(true, true, true, true);
+}
+
+/* 2D */
+
 void GLView::setCamera(const Camera &cam)
 {
   this->cam = cam;
@@ -117,6 +219,11 @@ void GLView::setupCamera() const
 
 void GLView::paintGL()
 {
+  if (this->cam.projection == Camera::ProjectionType::ANAGLYPH) {
+    paint3dAnaglyph();
+    return;
+  }
+
   glDisable(GL_LIGHTING);
   auto bgcol = ColorMap::getColor(*this->colorscheme, RenderColor::BACKGROUND_COLOR);
   auto axescolor = ColorMap::getColor(*this->colorscheme, RenderColor::AXES_COLOR);

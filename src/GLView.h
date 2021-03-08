@@ -39,6 +39,10 @@ public:
 	void setCamera(const Camera &cam);
 	void setupCamera() const;
 
+	void setup3dCamera(bool leftCamera);
+	void paintOnce();
+	void paint3dAnaglyph();
+
 	void setColorScheme(const ColorScheme &cs);
 	void setColorScheme(const std::string &cs);
 	void updateColorScheme();
