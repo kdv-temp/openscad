@@ -1291,6 +1291,9 @@
    <property name="text">
     <string>&amp;Perspective</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+2</string>
+   </property>
   </action>
   <action name="viewActionOrthogonal">
    <property name="checkable">
@@ -1302,6 +1305,9 @@
    </property>
    <property name="text">
     <string>&amp;Orthogonal</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+1</string>
    </property>
   </action>
   <action name="viewActionAnaglyph">
@@ -1319,7 +1325,7 @@
     <string>Stereo Vision (Anaglyph) - requires special red-cyan glasses</string>
    </property>
    <property name="shortcut">
-    <string>Alt+S</string>
+    <string>Alt+3</string>
    </property>
   </action>
   <action name="windowActionHideConsole">

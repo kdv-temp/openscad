@@ -477,6 +477,7 @@ MainWindow::MainWindow(const QStringList &filenames)
 					this, SLOT(openCSGSettingsChanged()));
 	connect(Preferences::inst(), SIGNAL(colorSchemeChanged(const QString&)),
 					this, SLOT(setColorScheme(const QString&)));
+	connect(Preferences::inst(), SIGNAL(anaglyphSettingsChanged()), this, SLOT(updateAnaglyph()));
 
 	Preferences::inst()->apply_win(); // not sure if to be commented, checked must not be commented(done some changes in apply())
 
@@ -3231,6 +3232,14 @@ void MainWindow::setFont(const QString &family, uint size)
 	if (size > 0)	font.setPointSize(size);
 	font.setStyleHint(QFont::TypeWriter);
 	activeEditor->setFont(font);
+}
+
+void MainWindow::updateAnaglyph() {
+	auto s = Settings::Settings::inst();
+	this->qglview->setEyeSeparation(s->get(Settings::Settings::eyeSeparation).toDouble() * 0.1);
+	this->qglview->setOutOfScreen(s->get(Settings::Settings::outOfScreen).toDouble() * 0.1);
+	this->qglview->setNearClippingPlane(s->get(Settings::Settings::nearClippingPlane).toDouble() * 0.1);
+	this->qglview->updateGL();
 }
 
 void MainWindow::quit()

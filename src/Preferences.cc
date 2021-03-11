@@ -853,21 +853,21 @@ void Preferences::on_horizontalSliderEyeSeparation_valueChanged(int val)
 {
 	Settings::Settings::inst()->set(Settings::Settings::eyeSeparation, Value(val));
 	writeSettings();
-	emit requestRedraw();
+	emit anaglyphSettingsChanged();
 }
 
 void Preferences::on_horizontalSliderOutOfScreen_valueChanged(int val)
 {
 	Settings::Settings::inst()->set(Settings::Settings::outOfScreen, Value(val));
 	writeSettings();
-	emit requestRedraw();
+	emit anaglyphSettingsChanged();
 }
 
 void Preferences::on_horizontalSliderNearClippingPlane_valueChanged(int val)
 {
 	Settings::Settings::inst()->set(Settings::Settings::nearClippingPlane, Value(val));
 	writeSettings();
-	emit requestRedraw();
+	emit anaglyphSettingsChanged();
 }
 
 void Preferences::writeSettings()

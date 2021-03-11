@@ -57,6 +57,9 @@ public:
 	void setShowFaces(bool enabled) { this->showfaces = enabled; }
 	bool showCrosshairs() const { return this->showcrosshairs; }
 	void setShowCrosshairs(bool enabled) { this->showcrosshairs = enabled; }
+	void setEyeSeparation(double val) { this->eyeSeparation = val; }
+	void setOutOfScreen(double val) { this->outOfScreen = val; }
+	void setNearClippingPlane(double val) { this->nearClippingPlane = val; }
 
 	virtual bool save(const char *filename) const = 0;
 	virtual std::string getRendererInfo() const = 0;
@@ -74,6 +77,9 @@ public:
 	bool showedges;
 	bool showcrosshairs;
 	bool showscale;
+	double eyeSeparation;
+	double outOfScreen;
+	double nearClippingPlane;
 
 #ifdef ENABLE_OPENCSG
 	bool is_opencsg_capable;

@@ -95,6 +95,7 @@ private slots:
 	void updatedAnimSteps();
 	void updatedAnimDump(bool checked);
 	void updateTVal();
+	void updateAnaglyph();
 	void updateUndockMode(bool undockMode);
 	void updateReorderMode(bool reorderMode);
 	void setFont(const QString &family, uint size);

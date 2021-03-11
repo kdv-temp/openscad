@@ -112,6 +112,7 @@ signals:
 	void consoleFontChanged(const QString &family, uint size) const;
 	void colorSchemeChanged(const QString &scheme) const;
 	void openCSGSettingsChanged() const;
+	void anaglyphSettingsChanged() const;
 	void syntaxHighlightChanged(const QString &s) const;
 	void editorConfigChanged() const;
 	void ExperimentalChanged() const ;

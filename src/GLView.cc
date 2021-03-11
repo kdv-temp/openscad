@@ -3,7 +3,6 @@
 #include "stdio.h"
 #include "colormap.h"
 #include "rendersettings.h"
-#include "settings.h"
 #include "printutils.h"
 #include "renderer.h"
 #include "degree_trig.h"
@@ -31,6 +30,9 @@ GLView::GLView()
   colorscheme = &ColorMap::inst()->defaultColorScheme();
   cam = Camera();
   far_far_away = RenderSettings::inst()->far_gl_clip_limit;
+  eyeSeparation = 12.0;
+  outOfScreen = 18.0;
+  nearClippingPlane = 1.0;
 #ifdef ENABLE_OPENCSG
   is_opencsg_capable = false;
   has_shaders = false;
@@ -84,9 +86,6 @@ void GLView::resizeGL(int w, int h)
 /* 3d anaglyph - set up camera for left or right eye */
 /* after https://quiescentspark.blogspot.com/2011/05/rendering-3d-anaglyph-in-opengl.html */
 void GLView::setup3dCamera(bool leftCamera) {
-  double eyeSeparation = Settings::Settings::inst()->get(Settings::Settings::eyeSeparation).toDouble() * 0.1;
-  double outOfScreen = Settings::Settings::inst()->get(Settings::Settings::outOfScreen).toDouble() * 0.1;
-  double nearClippingPlane = Settings::Settings::inst()->get(Settings::Settings::nearClippingPlane).toDouble() * 0.1;
   float left, right, bottom, top;
   float convergence = (float)cam.zoomValue();
   float aspectRatio = aspectratio;
