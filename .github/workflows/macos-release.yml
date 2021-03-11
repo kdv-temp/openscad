@@ -3,9 +3,7 @@ name: macos-release
 on:
   push:
     branches:
-      - macos-release-build
-    tags:
-      - '*'
+      - master
 
 jobs:
   build:
