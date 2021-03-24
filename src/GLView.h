@@ -77,9 +77,9 @@ public:
 	bool showedges;
 	bool showcrosshairs;
 	bool showscale;
-	double eyeSeparation;
-	double outOfScreen;
-	double nearClippingPlane;
+	double eyeSeparation; // in % of convergence distance / 30.0. Rule of thumb: convergence distance / 30.0
+	double outOfScreen;   // in % of screen width. Ought to be: in % of body depth. Rule of thumb: 18%
+	double nearClippingPlane; // in % of convergence distance. Rule of thumb: begin with 20-30%
 
 #ifdef ENABLE_OPENCSG
 	bool is_opencsg_capable;

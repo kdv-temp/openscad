@@ -329,9 +329,9 @@ Color4f ColorMap::anaglyphColor(const Color4f &c_in) {
   if (anaglyphmode) {
     // Numbers are for lcd and red/cyan glasses, from "Producing Anaglyphs from Synthetic Images",
     // https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.7.6968&rep=rep1&type=pdf#page=4
-    c_out[0] = (0.4561   -.0434706)*c_in[0]+ ( .500484 -.0879388)*c_in[1]+( .176381 -0.00155529)*c_in[2];
-    c_out[1] = (-.0400822+.378476) *c_in[0]+ (-.0378246+.73364)  *c_in[1]+(-.0157589 -.0184503) *c_in[2];
-    c_out[2] = (-.0152161-.0721527)*c_in[0]+ (-.0205971-.112961) *c_in[1]+(-.00546856+1.2264)   *c_in[2];
+    c_out[0] = (0.4561   -.0434706)*c_in[0]+ ( .500484 -.0879388)*c_in[1]+( .176381  -0.00155529)*c_in[2];
+    c_out[1] = (-.0400822+.378476) *c_in[0]+ (-.0378246+.73364)  *c_in[1]+(-.0157589  -.0184503) *c_in[2];
+    c_out[2] = (-.0152161-.0721527)*c_in[0]+ (-.0205971-.112961) *c_in[1]+(-.00546856+1.2264)    *c_in[2];
     c_out[3] = c_in[3];
     for (int i = 0; i < 3; i++) {
       if (c_out[i] < 0.0) c_out[i] = 0.0;

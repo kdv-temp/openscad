@@ -30,7 +30,7 @@ GLView::GLView()
   colorscheme = &ColorMap::inst()->defaultColorScheme();
   cam = Camera();
   far_far_away = RenderSettings::inst()->far_gl_clip_limit;
-  eyeSeparation = 12.0;
+  eyeSeparation = 100.0;
   outOfScreen = 18.0;
   nearClippingPlane = 1.0;
 #ifdef ENABLE_OPENCSG
@@ -90,16 +90,22 @@ void GLView::setup3dCamera(bool leftCamera) {
   float convergence = (float)cam.zoomValue();
   float aspectRatio = aspectratio;
   float fov = cam.fov;
-  double offset = - cam.zoomValue() * outOfScreen * 0.01;
+
+  /* outOfScreen is the distance the world is translated to the back of the screen. 
+     Better would be that outOfScreen is the percentage of the world that should stick out from the screen,
+     and have OpenSCAD calculate how much the translation needs to be.  */
+    
+  double offset = - cam.zoomValue() * outOfScreen * 0.01; // distance the world is translated to the back of the screen
   float nearClippingDistance = 0.01 * cam.zoomValue() * nearClippingPlane;
-  float farClippingDistance = 100.0 * cam.zoomValue() * nearClippingPlane; // ratio of 10000 between near and far- ought to be no problem for floats
+  float farClippingDistance = 1000.0 * cam.zoomValue() * nearClippingPlane; // ratio of 100000 between near and far - ought to be no problem for floats
+  float eyeSeparationDistance = eyeSeparation / 100.0 * cam.zoomValue() / 30.0;
 
   // calculate frustum
   top = nearClippingDistance * tan_degrees(fov / 2.0);
   bottom = -top;
   float a = aspectRatio * tan_degrees(fov / 2.0) * convergence;
-  float b = a - eyeSeparation / 2;
-  float c = a + eyeSeparation / 2;
+  float b = a - eyeSeparationDistance / 2;
+  float c = a + eyeSeparationDistance / 2;
   if (leftCamera) { // left camera
     left = -b * nearClippingDistance / convergence;
     right = c * nearClippingDistance / convergence;
@@ -115,10 +121,10 @@ void GLView::setup3dCamera(bool leftCamera) {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   if (leftCamera) { // left camera
-    glTranslatef(eyeSeparation / 2, 0.0, 0.0);
+    glTranslatef(eyeSeparationDistance / 2, 0.0, 0.0);
   }
   else { // right camera
-    glTranslatef(-eyeSeparation / 2, 0.0, 0.0);
+    glTranslatef(-eyeSeparationDistance / 2, 0.0, 0.0);
   }
   glTranslatef(0.0, 0.0, offset);
   gluLookAt(0.0, -cam.zoomValue(), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);

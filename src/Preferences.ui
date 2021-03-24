@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>653</width>
+    <width>636</width>
     <height>539</height>
    </rect>
   </property>
@@ -27,7 +27,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page3DView">
        <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -101,6 +101,12 @@
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksAbove</enum>
+            </property>
+            <property name="tickInterval">
+             <number>500</number>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -116,10 +122,10 @@
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="tickPosition">
-             <enum>QSlider::NoTicks</enum>
+             <enum>QSlider::TicksAbove</enum>
             </property>
             <property name="tickInterval">
-             <number>0</number>
+             <number>250</number>
             </property>
            </widget>
           </item>
@@ -134,6 +140,12 @@
            <widget class="QSlider" name="horizontalSliderNearClippingPlane">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksAbove</enum>
+            </property>
+            <property name="tickInterval">
+             <number>500</number>
             </property>
            </widget>
           </item>
@@ -187,9 +199,9 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
-             <width>590</width>
-             <height>980</height>
+             <y>-450</y>
+             <width>602</width>
+             <height>901</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
@@ -1344,8 +1356,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>100</width>
-               <height>30</height>
+               <width>84</width>
+               <height>26</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1667,8 +1679,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>640</width>
-             <height>978</height>
+             <width>548</width>
+             <height>747</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_12">

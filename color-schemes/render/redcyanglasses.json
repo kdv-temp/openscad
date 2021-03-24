@@ -3,20 +3,20 @@
     "index" : 2001,
     "show-in-gui" : true,
     "description" : "3d anaglyph",
-    "_comment" : "created by gencolorscheme.py",
+    "_comment" : "created by colorscheme.scad",
 
     "colors" : {
-        "background" :         "#ffffff",
-        "highlight" :          "#80808080",
-        "axes-color" :         "#ea80ff",
-        "opencsg-face-front" : "#dfff80",
-        "opencsg-face-back" :  "#df80ff",
-        "cgal-face-front" :    "#dfff80",
-        "cgal-face-back" :     "#df80ff",
-        "cgal-face-2d" :       "#bfff80",
-        "cgal-edge-front" :    "#dfff80",
-        "cgal-edge-back" :     "#ea80ff",
-        "cgal-edge-2d" :       "#ca80ff",
-        "crosshair" :          "#754080"
+        "background" :         "#F2F2F2",
+        "highlight" :          "#FF19FF80",
+        "axes-color" :         "#FF19FF",
+        "opencsg-face-front" : "#FFFF19",
+        "opencsg-face-back" :  "#FF19FF",
+        "cgal-face-front" :    "#FFFF19",
+        "cgal-face-back" :     "#FF19FF",
+        "cgal-face-2d" :       "#FFFF19",
+        "cgal-edge-front" :    "#FF19FF",
+        "cgal-edge-back" :     "#FF19FF",
+        "cgal-edge-2d" :       "#FF19FF",
+        "crosshair" :          "#FF19FF"
     }
 }
